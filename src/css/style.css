@@ -3,3 +3,7 @@ body {
     color: #005CC5;
     text-align: center;
   }
+
+.delete {
+  float: right
+}

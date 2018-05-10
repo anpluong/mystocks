@@ -15,6 +15,7 @@ class App extends Component {
             selectedStock: ''
         }
         this.stockSearch = this.stockSearch.bind(this);
+        this.onDeleteStock = this.onDeleteStock.bind(this);
     }
 
     stockSearch(stockSymbol) {      
@@ -25,6 +26,16 @@ class App extends Component {
                     //  console.log("state ", this.state.selectedStock)
                 }  
         )                 
+    }
+
+    onDeleteStock(seletedStock) {
+        console.log(seletedStock);
+        const stocks = this.state.stocks.filter(r => r != seletedStock) 
+        this.setState({
+            selectedStock: stocks[0],
+            stocks
+        })
+     //   console.log(seletedStock)
     }
  
     render() {
@@ -37,7 +48,7 @@ class App extends Component {
                 {/* This will pass an array of stocks to the child and be rendered */}
                 <StockList stocks = {this.state.stocks} /> 
                 {/* The selectedStock is passed to the child StockDetail */}
-                <StockDetail selectedStock = {this.state.selectedStock} />
+                <StockDetail selectedStock = {this.state.selectedStock} onDeleteStock = {this.onDeleteStock}/>
             </div>
 
         )
