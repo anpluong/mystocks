@@ -1,4 +1,7 @@
 var express = require('express');
+const webpackMiddleware = require('webpack-dev-middleware');
+const webpack = require('webpack');
+const webpackConfig = require('./../../webpack.config.js')
 var app = express();
 
 app.use(express.static(__dirname +'./../../')); //serves the index.html
