@@ -1,20 +1,25 @@
 const express = require('express');
-const app = express();
+const webpackMiddleware = require('webpack-dev-middleware');
+const webpack = require('webpack');
+const webpackConfig = require('./../../webpack.config.js');
 const path = require('path');
 const bodyParser = require('body-parser');
 const db = require('./database');
+var app = express();
 
 const usrController = require('./controllers/usrController');
 const authController = require('./controllers/authController');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 // See the react auth blog in which cors is required for access
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
   res.setHeader('Access-Control-Allow-Headers', 'Content-type,Authorization');
   next();
 });
+
 
 app.use(express.static(__dirname +'./../../')); //serves the index.html
 

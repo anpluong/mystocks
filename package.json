@@ -4,8 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon src/server/index.js",
-    "webpack": "webpack -w",
-    "dev": "concurrently --kill-others-on-fail \"npm start\" \"npm run webpack\""
+    "webpack": "webpack -w"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +15,6 @@
     "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
-    "concurrently": "^3.5.1",
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "lodash": "^4.17.10",
@@ -27,7 +25,8 @@
     "pg-promise": "^8.4.3",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-router-dom": "^4.2.2"
+    "react-router-dom": "^4.2.2",
+    "webpack-dev-middleware": "^1.9.0"
   },
   "devDependencies": {
     "babel": "^6.23.0",
