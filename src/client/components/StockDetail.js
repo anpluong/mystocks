@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import StockDateList from './StockDateList';
 
 const apiKey = '6H8OCBWU5LYNFJOH';
 const URL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&apikey=${apiKey}&symbol=`;
@@ -15,44 +16,45 @@ class StockDetail extends Component {
         this.state = {
             stockLabel: '',
             stockDate: '',
-            stockPrice: ''
+            stockPriceOpen: '',
+            stockPriceClose: '',
+            priceHistory: null
         }      
     }
 
-    // // a function to make axios to get the stock
-    //  componentDidMount() {        
-    //         axios.get(URL + "FB")         
-    //         .then((response) => {         
-                
-    //         var stockDate = response.data["Meta Data"]["3. Last Refreshed"];
-    //         //     // var newDate = stockDate.substr(0, stockDate.indexOf(' '));            
-    //         this.setState({
-    //             stockS: stockDate
-    //         }, () => {
-    //             console.log(stockDate)
-    //         })            
-    // //    })
-    //    })
-    // }
-
     componentWillReceiveProps(nextProps) {
+        // if the selectedStock is deleted, and the array of stock is empty, at that time
+        // the first element of the array stock is null and is passed to the child and 
+        // it should not render anything. 
+        if (nextProps.selectedStock) {
         axios.get(URL + nextProps.selectedStock)         
-        .then((response) => {         
-            var stockDate = response.data["Meta Data"]["3. Last Refreshed"];
-            var stockPrice = response.data["Time Series (Daily)"][stockDate]["4. close"];
+        .then((response) => {     
+            const timeSeries = "Time Series (Daily)";
+            let dateObject = response.data[timeSeries]
+            let stockDate = response.data["Meta Data"]["3. Last Refreshed"].split(" ");
+            let stockPriceOpen = dateObject[stockDate[0]]["1. open"];
+            let stockPriceClose = dateObject[stockDate[0]]["4. close"];
+
             this.setState({
             stockLabel: nextProps.selectedStock,
             stockDate,
-            stockPrice
+            stockPriceClose,
+            stockPriceOpen,
+            priceHistory: dateObject
         })
-    }) 
+      }) 
     }
+    
+}
+
     
     render() {
         if (!this.props.selectedStock) {
             return <div className="col-md-8">Please select a stock quote...</div>
         }
 
+        let {onDeleteStock} = this.props;
+        
         return (
             <div className="col-md-8">
                 {/* <p>{this.stockSearch(this.props.selectedStock)}</p> */}
@@ -62,7 +64,7 @@ class StockDetail extends Component {
                             <th>Stock Symbol</th>
                             <th>Date</th>
                             <th>Open Price </th>
-                            {/*<th>Close Price </th> */}
+                            <th>Close Price </th>
                         </tr>
                     </thead>
                     <tbody>                      
@@ -74,12 +76,20 @@ class StockDetail extends Component {
                                 {this.state.stockDate}
                             </td>
                             <td>
-                                {this.state.stockPrice}
+                                {this.state.stockPriceOpen}
                             </td>
+                            <td>
+                                {this.state.stockPriceClose}
+                            </td>                            
                         </tr>
-                    </tbody>
+                    </tbody>                    
                 </table>
-            </div>
+                <div className="delete">                    
+                    <button type="button" onClick={() => this.props.onDeleteStock(this.state.stockLabel)}>
+                        Delete
+                    </button>   
+                </div>
+            </div>            
         )
     }
 }
