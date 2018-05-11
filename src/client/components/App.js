@@ -30,19 +30,17 @@ class App extends Component {
         )
     }
 
-<<<<<<< HEAD
-=======
+
     onDeleteStock(seletedStock) {
         console.log(seletedStock);
-        const stocks = this.state.stocks.filter(r => r != seletedStock) 
+        const stocks = this.state.stocks.filter(r => r != seletedStock)
         this.setState({
             selectedStock: stocks[0],
             stocks
         })
      //   console.log(seletedStock)
     }
- 
->>>>>>> 702d359ed45df37b4180cbe63386416e1391e44f
+
     render() {
 
         return (
