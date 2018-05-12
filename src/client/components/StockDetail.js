@@ -53,7 +53,6 @@ class StockDetail extends Component {
             return <div className="col-md-8">Please select a stock quote...</div>
         }
 
-        let {onDeleteStock} = this.props;
         
         return (
             <div className="col-md-8">
@@ -84,11 +83,18 @@ class StockDetail extends Component {
                         </tr>
                     </tbody>                    
                 </table>
-                <div className="delete">                    
-                    <button type="button" onClick={() => this.props.onDeleteStock(this.state.stockLabel)}>
-                        Delete
-                    </button>   
-                </div>
+                {this.props.flag ?
+                    <div className="Delete">                    
+                        <button type="button" onClick={() => this.props.onDeleteStock(this.state.stockLabel)}>
+                            Delete
+                        </button>   
+                    </div>
+                    : <div className="Add">                    
+                        <button type="button" onClick={() => this.props.onAddStock(this.state.stockLabel)}>
+                            Add
+                        </button>   
+                    </div>
+                }
             </div>            
         )
     }

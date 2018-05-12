@@ -1,17 +1,15 @@
 import React from 'react'
-import StockListItem from './StockListItem';
-
+ 
 const StockList  = (props) => {
     const stockItems = props.stocks.map((stock) => {
         return (
-            <StockListItem 
-                key = {stock}
-                stock = {stock}
-            />
+            <li className="list-group-item" key={stock}>
+                <a onClick={() => props.chooseStock(stock)}><div>{stock}</div></a>
+            </li>
         )
     })
 
-    return (
+     return (
         <ul className="col-md-2 list-group">
             {stockItems}
         </ul>
