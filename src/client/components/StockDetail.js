@@ -19,16 +19,17 @@ class StockDetail extends Component {
             stockPriceOpen: '',
             stockPriceClose: '',
             priceHistory: null
-        }      
+        }
     }
 
     componentWillReceiveProps(nextProps) {
+      console.log('componentWillRecieveProps... nextProps:, ', nextProps);
         // if the selectedStock is deleted, and the array of stock is empty, at that time
-        // the first element of the array stock is null and is passed to the child and 
-        // it should not render anything. 
+        // the first element of the array stock is null and is passed to the child and
+        // it should not render anything.
         if (nextProps.selectedStock) {
-        axios.get(URL + nextProps.selectedStock)         
-        .then((response) => {     
+        axios.get(URL + nextProps.selectedStock)
+        .then((response) => {
             const timeSeries = "Time Series (Daily)";
             let dateObject = response.data[timeSeries]
             let stockDate = response.data["Meta Data"]["3. Last Refreshed"].split(" ");
@@ -42,19 +43,20 @@ class StockDetail extends Component {
             stockPriceOpen,
             priceHistory: dateObject
         })
-      }) 
+      })
     }
-    
+
 }
 
-    
+
     render() {
         if (!this.props.selectedStock) {
             return <div className="col-md-8">Please select a stock quote...</div>
         }
 
         let {onDeleteStock} = this.props;
-        
+        console.log('state: ', this.state);
+
         return (
             <div className="col-md-8">
                 {/* <p>{this.stockSearch(this.props.selectedStock)}</p> */}
@@ -67,7 +69,7 @@ class StockDetail extends Component {
                             <th>Close Price </th>
                         </tr>
                     </thead>
-                    <tbody>                      
+                    <tbody>
                         <tr>
                             <td>
                                 {this.state.stockLabel}
@@ -80,16 +82,19 @@ class StockDetail extends Component {
                             </td>
                             <td>
                                 {this.state.stockPriceClose}
-                            </td>                            
+                            </td>
                         </tr>
-                    </tbody>                    
+                    </tbody>
                 </table>
-                <div className="delete">                    
-                    <button type="button" onClick={() => this.props.onDeleteStock(this.state.stockLabel)}>
+                <div className="delete">
+                    <button type="button" onClick={() => this.props.onRemoveStock(this.state.stockLabel)}>
                         Delete
-                    </button>   
+                    </button>
+                    <button type="button" onClick={() => this.props.onSaveStock(this.state.stockLabel)}>
+                        Save
+                    </button>
                 </div>
-            </div>            
+            </div>
         )
     }
 }

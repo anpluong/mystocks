@@ -5,6 +5,7 @@ import StockList from './StockList';
 import StockDetail from './StockDetail';
 import AuthService from './AuthService';
 import withAuth from './withAuth';
+import axios from 'axios';
 
 
 class App extends Component {
@@ -13,11 +14,14 @@ class App extends Component {
         super(props);
 
         this.state = {
-            stocks: [],
+            stocks: [], // initialize with user's save stocks
             selectedStock: ''
         }
         this.stockSearch = this.stockSearch.bind(this);
         this.onDeleteStock = this.onDeleteStock.bind(this);
+        this.onSaveStock = this.onSaveStock.bind(this);
+        this.onRemoveStock = this.onRemoveStock.bind(this);
+        this.Auth = new AuthService();
     }
 
     stockSearch(stockSymbol) {
@@ -31,14 +35,48 @@ class App extends Component {
     }
 
 
-    onDeleteStock(seletedStock) {
-        console.log(seletedStock);
-        const stocks = this.state.stocks.filter(r => r != seletedStock)
+    onDeleteStock(selectedStock) {
+        console.log(seletecdStock);
+        const stocks = this.state.stocks.filter(r => r != selectedStock)
         this.setState({
             selectedStock: stocks[0],
             stocks
         })
      //   console.log(seletedStock)
+    }
+
+    onSaveStock(selectedStock) {
+        console.log(selectedStock);
+        // THIS REQUEST SHOULD ONLY BE MADE IF THE SELECTED STOCK IS
+        // IS NOT ALREADY IN THEIR SAVED STOCKS
+        // In other words, only display the save button if the selected stock
+        // is not found in this.state.stocks
+        console.log('profile: ', this.Auth.getProfile());
+        axios.post('/saveStock', {
+            symbol: selectedStock,
+            usr_id: this.Auth.getProfile().usr
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    }
+
+    onRemoveStock(selectedStock) {
+      console.log(selectedStock);
+      console.log('profile: ', this.Auth.getProfile());
+      axios.post('/removeStock', {
+          symbol: selectedStock,
+          usr_id: this.Auth.getProfile().usr
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
 
     render() {
@@ -51,7 +89,12 @@ class App extends Component {
                 {/* This will pass an array of stocks to the child and be rendered */}
                 <StockList stocks = {this.state.stocks} />
                 {/* The selectedStock is passed to the child StockDetail */}
-                <StockDetail selectedStock = {this.state.selectedStock} onDeleteStock = {this.onDeleteStock}/>
+                <StockDetail
+                  selectedStock = {this.state.selectedStock}
+                  onDeleteStock = {this.onDeleteStock}
+                  onSaveStock = {this.onSaveStock}
+                  onRemoveStock = {this.onRemoveStock}
+                />
             </div>
 
         )

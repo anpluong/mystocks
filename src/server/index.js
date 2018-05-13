@@ -9,6 +9,7 @@ var app = express();
 
 const usrController = require('./controllers/usrController');
 const authController = require('./controllers/authController');
+const stockController = require('./controllers/stockController');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,6 +27,9 @@ app.use(express.static(__dirname +'./../../')); //serves the index.html
 // LOGIN ROUTE
 app.post('/login', usrController.verifyUsr, authController.setJWT);
 app.post('/register', usrController.createUsr, authController.setJWT);
+
+app.post('/saveStock', stockController.saveStock);
+app.post('/removeStock', stockController.removeStock);
 
 
 // This is a "catch-all" to solve react-router's refresh problem
