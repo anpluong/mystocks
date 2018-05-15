@@ -5,7 +5,7 @@ const webpackConfig = require('./../../webpack.config.js');
 const path = require('path');
 const bodyParser = require('body-parser');
 const db = require('./database');
-var app = express();
+const app = express();
 
 const usrController = require('./controllers/usrController');
 const authController = require('./controllers/authController');
@@ -24,12 +24,15 @@ app.use((req, res, next) => {
 
 app.use(express.static(__dirname +'./../../')); //serves the index.html
 
-// LOGIN ROUTE
+// USER/AUTH ROUTES
 app.post('/login', usrController.verifyUsr, authController.setJWT);
 app.post('/register', usrController.createUsr, authController.setJWT);
 
+// STOCK ROUTES
+app.get('/getMyStocks', stockController.getMyStocks);
 app.post('/saveStock', stockController.saveStock);
 app.post('/removeStock', stockController.removeStock);
+
 
 
 // This is a "catch-all" to solve react-router's refresh problem

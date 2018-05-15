@@ -63,6 +63,13 @@ body {
   .form-submit:hover{
      opacity: 0.6;
   }
-.delete {
-  float: right
-}
+  
+  .Add {
+    float: right
+  }
+  
+  .Delete {
+      float: right
+  }
+
+

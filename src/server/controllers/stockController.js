@@ -25,6 +25,26 @@ const checkForMoreRecords = (stock_id) => {
   return db.any('SELECT * FROM usr_stock WHERE stock_id = $1', [stock_id]);
 }
 
+stockController.getMyStocks = (req, res) => {
+  console.log('req.query: ', req.query);
+  const usr_id = req.query.id;
+
+
+
+  return db.any('SELECT stock.symbol FROM usr_stock INNER JOIN stock ON usr_id = $1 AND usr_stock.stock_id = stock.stock_id', [usr_id])
+    .then(matchedEntries => {
+      console.log('matchedEntries: ', matchedEntries);
+      let stockSymbols = matchedEntries.map(obj => {
+        return obj.symbol;
+      });
+      console.log('stockSymbols: ', stockSymbols);
+      res.json({stockSymbols: stockSymbols})
+    })
+    .catch((error) => {
+      console.log('error grabbing users stock symbols: ', error);
+    });
+}
+
 
 stockController.saveStock = (req, res, next) => {
   const { symbol, usr_id } = req.body;
@@ -42,12 +62,14 @@ stockController.saveStock = (req, res, next) => {
 stockController.removeStock = (req, res, next) => {
   // We want to remove just the entry in the "usr_stock" join table.
   // this is because other users may have records with that same stock
-  // We want to delete from "stock" table as well only if
+  // EXCEPTION ---> We want to delete from "stock" table as well only if
   // this was the only user who had saved that stock.
+  // In other words, if no other users have saved that stock, delete it from the stock table.
 
-  // First gram stock_id
+  // STEP BY STEP
+  // First grab stock_id
   // perform DELETE from join table
-  // SELECT * from usr_stock where stock = the stock we just deleted
+  // SELECT * from usr_stock where stock_id = the stock_id we just deleted
   // if nothing is returned from the select (no other users with that stock)...
   // then we remove from the stock table as well
   // else do nothing
@@ -79,30 +101,6 @@ stockController.removeStock = (req, res, next) => {
   .catch(error => {
     console.log('remove error: ', error);
   });
-
-
-  // let stock_id;
-  // let recordsLength;
-  // grabStockId(symbol)
-  //   .then(id => {
-  //     stock_id = id;
-  //   })
-  //   .then(deleteUsrStockEntry(usr_id, stock_id))
-  //   .then(() => {
-  //     recordsLength = checkForMoreRecords(stock_id).length;
-  //   })
-  //   .then(data => {
-  //     console.log('data: ', data);
-  //     if (recordsLength === 0) {
-  //       // if no more records are found in the join TABLE
-  //       // then we know that we can delete from the stock TABLE
-  //       return db.none('DELETE FROM stock WHERE stock_id = $1', [stock_id]);
-  //     }
-  //     res.json({success: true, err: null});
-  //   })
-  //   .catch(err => {
-  //     console.log('remove stock error: ', err);
-  //   })
 }
 
 

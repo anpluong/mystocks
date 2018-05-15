@@ -13,9 +13,9 @@ export default function withAuth(AuthComponent) {
     }
 
     componentWillMount() {
-      console.log('withAuth component will mount called');
-      if (!Auth.isLoggedIn()) { // checks local storage for jwt
-        this.props.history.replace('/login');
+      console.log('withAuth componentWillMount called');
+      if (!Auth.isLoggedIn()) { // Checks local storage for jwt and makes sure it isn't expired
+        this.props.history.replace('/login'); //
       } else {
         try {
           const profile = Auth.getProfile(); // returns decoded jwt;
