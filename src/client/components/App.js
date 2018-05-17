@@ -68,8 +68,6 @@ class App extends Component {
 
     // add Stock function
     onAddStock(selectedStock) {
-      console.log(selectedStock);
-      console.log('profile: ', this.Auth.getProfile());
       axios.post('/saveStock', {
           symbol: selectedStock,
           usr_id: this.props.jwt.usr
