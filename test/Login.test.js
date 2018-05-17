@@ -13,10 +13,10 @@ describe('Login Component', () => {
  })
 
  it('renders a email input', () => {
-  expect(mount(<Router><Login /></Router>).find('#email').length).toEqual(1)
+  expect(mount(<Router><Login /></Router>).find('#loginEmail').length).toEqual(1)
  })
 
  it('renders a password input', () => {
-  expect(mount(<Router><Login /></Router>).find('#password').length).toEqual(1)
+  expect(mount(<Router><Login /></Router>).find('#loginPassword').length).toEqual(1)
  })
 })

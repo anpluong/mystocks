@@ -20,8 +20,9 @@ class Register extends Component {
             <div className="center">
                 <div className="card">
                     <h1>Register</h1>
-                    <form onSubmit={this.handleFormSubmit}>
+                    <form className="register" onSubmit={this.handleFormSubmit}>
                         <input
+                            id="registerEmail"
                             className="form-item"
                             placeholder="Email"
                             name="email"
@@ -29,6 +30,7 @@ class Register extends Component {
                             onChange={this.handleChange}
                         />
                         <input
+                            id="registerPassword"
                             className="form-item"
                             placeholder="Password"
                             name="password"
@@ -36,6 +38,7 @@ class Register extends Component {
                             onChange={this.handleChange}
                         />
                         <input
+                            id="registerPassconf"
                             className="form-item"
                             placeholder="Confirm password"
                             name="passconf"
