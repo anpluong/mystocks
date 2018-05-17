@@ -1,16 +1,17 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
+import _ from 'lodash';
+
+// Components
 import SearchBar from './searchBar';
 import StockList from './StockList';
 import StockDetail from './StockDetail';
 import AuthService from './AuthService';
 import withAuth from './withAuth';
-import axios from 'axios';
-import _ from 'lodash';
 
 
 class App extends Component {
-
     constructor(props) {
         super(props);
 
@@ -30,12 +31,9 @@ class App extends Component {
 
 
     componentDidMount() {
-      console.log('componentDidMount');
-      let profile = this.Auth.getProfile();
-      console.log('profile: ', profile);
-      axios.get(`/getMyStocks?id=${profile.usr}`)
+      let usr_id = this.props.jwt.usr;
+      axios.get(`/getMyStocks?id=${usr_id}`)
         .then(response => {
-          console.log('server response: ', response);
           this.setState({
             stocks: response.data.stockSymbols,
             selectedStock: response.data.stockSymbols[0], // Initialize as the users first saved stock
@@ -49,19 +47,15 @@ class App extends Component {
     // delete Stock function
     onDeleteStock(selectedStock) {
         axios.post('/removeStock', {
-            symbol: selectedStock,
-            usr_id: this.props.jwt.usr
+            usr_id: this.props.jwt.usr,
+            symbol: selectedStock
           })
           .then(response => {
-            console.log(response);
-            let newArray = [...this.state.stocks];
-            // use lodash to remove the specific stock from the array
-            newArray = _.pull(newArray, selectedStock);
-            selectedStock = newArray[0];
-
+            let oldStocks = [...this.state.stocks];
+            let newStocks = _.pull(oldStocks, selectedStock);
             this.setState({
-                stocks: newArray,
-                selectedStock
+                stocks: newStocks,
+                selectedStock: newStocks[0]
             },  () => {
                 // print out the state to monitor it
                 console.log("state ", this.state.stocks)
