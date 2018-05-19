@@ -1,18 +1,12 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import StockDateList from './StockDateList';
-
 const apiKey = '6H8OCBWU5LYNFJOH';
 const URL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&apikey=${apiKey}&symbol=`;
 
-// const StockDetail = ({selectedStock}) => {
-
 class StockDetail extends Component {
-    // when the selectedStock is not defined
-
     constructor(props) {
         super(props);
-
         this.state = {
             stockLabel: '',
             stockDate: '',
@@ -22,14 +16,21 @@ class StockDetail extends Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-      console.log('componentWillRecieveProps... nextProps:, ', nextProps);
+    componentDidUpdate(prevProps, prevState, snapshot) {
+      console.log('prevProps:, ', prevProps);
+      console.log('prevState: ', prevState);
+      console.log('snapshot: ', snapshot);
         // if the selectedStock is deleted, and the array of stock is empty, at that time
         // the first element of the array stock is null and is passed to the child and
         // it should not render anything.
-        if (nextProps.selectedStock) {
-        axios.get(URL + nextProps.selectedStock)
-        .then((response) => {
+
+        if (this.props.selectedStock === '') {
+          return null;
+        }
+
+        if (prevProps.selectedStock !== this.props.selectedStock) {
+        axios.get(URL + this.props.selectedStock)
+          .then((response) => {
             const timeSeries = "Time Series (Daily)";
             let dateObject = response.data[timeSeries]
             let stockDate = response.data["Meta Data"]["3. Last Refreshed"].split(" ");
@@ -37,16 +38,19 @@ class StockDetail extends Component {
             let stockPriceClose = dateObject[stockDate[0]]["4. close"];
 
             this.setState({
-            stockLabel: nextProps.selectedStock,
-            stockDate,
-            stockPriceClose,
-            stockPriceOpen,
-            priceHistory: dateObject
-        })
-      })
+              stockLabel: this.props.selectedStock,
+              stockDate,
+              stockPriceClose,
+              stockPriceOpen,
+              priceHistory: dateObject
+            });
+          });
+        } else {
+          return null;
+        }
     }
 
-}
+
 
 
     render() {
@@ -96,6 +100,7 @@ class StockDetail extends Component {
                         </button>
                     </div>
                 }
+                <div id="graphdiv2"></div>
             </div>
         )
     }

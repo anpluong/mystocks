@@ -58,13 +58,13 @@ class Login extends Component {
     }
 
     handleChange(e){
-      this.setState({[e.target.name]: e.target.value})
+      this.setState({[e.target.name]: e.target.value});
     }
 
     handleFormSubmit(e) {
       console.log('handleFormSubmit called');
       e.preventDefault();
-      console.log('THIS.STATE.EMAIL', this.state.email)
+      console.log('THIS.STATE.EMAIL', this.state.email);
       console.log('THIS.STATE.PASSWORD', this.state.password);
 
       // Call the login method on the class instance that was created in the constructor

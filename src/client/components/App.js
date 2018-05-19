@@ -111,9 +111,15 @@ class App extends Component {
 
                 {/* IF selected stock is in the left column, pass onDeleteStock, ELSE pass onAddStock */}
                 {this.state.stocks.includes(this.state.selectedStock) ?
-                    <StockDetail stocks={this.state.stocks} selectedStock = {this.state.selectedStock} onDeleteStock = {this.onDeleteStock}/>
+                    <StockDetail
+                      stocks={this.state.stocks}
+                      selectedStock = {this.state.selectedStock}
+                      onDeleteStock = {this.onDeleteStock}/>
                     :
-                    <StockDetail stocks={this.state.stocks} selectedStock = {this.state.selectedStock} onAddStock = {this.onAddStock}/>
+                    <StockDetail
+                      stocks={this.state.stocks}
+                      selectedStock = {this.state.selectedStock}
+                      onAddStock = {this.onAddStock}/>
                 }
             </div>
 
