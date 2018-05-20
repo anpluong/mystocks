@@ -5,16 +5,16 @@ const StockDateList = ({pH}) => {
     // console.log(pH)
     // var newDate = []
 
-    // for (var property in pH) {                
+    // for (var property in pH) {
     //     newDate.push(property)
 
     // I got the date
     // console.log(newDate);
 
     return (
-        <div>
-            {/* The graph or the stock price list should be here    */}
-        </div>
+      <div>
+        {/* The graph or the stock price list should be here    */}
+      </div>
     )
 }
 

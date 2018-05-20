@@ -1,42 +1,40 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 class SearchBar extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            stockSymbol: ''
-        }
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-   }
-
-    handleChange(e) {
-        // The setState will call render function that will set the stock, and then the stock will be assigned to value input.
-        this.setState({stockSymbol: e.target.value});       
+  constructor(props) {
+    console.log('SearchBar constructor called');
+    super(props);
+    this.state = {
+      inputValue: ''
     }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-    handleSubmit(e) {
-        e.preventDefault();
-        this.props.onSearchTermChange(this.state.stockSymbol);
-    }
+  handleChange(e) {
+    this.setState({inputValue: e.target.value});
+  }
 
-    render() {
-        return (
-            <div className="search-bar">
-                <form onSubmit={this.handleSubmit}>                
-                    <input                 
-                    size = {120}
-                    value = {this.state.stockSymbol}
-                    onChange = {this.handleChange}
-                    />
-                    <button>Submit</button>
-                </form>
-            </div>
-        )
-    }
+  handleSubmit(e) {
+    e.preventDefault();
+    this.props.chooseStock(this.state.inputValue);
+    this.setState({inputValue: ''}); // reset input field
+  }
+
+  render() {
+    return (
+      <div className="search-bar">
+        <form onSubmit={this.handleSubmit}>
+          <input
+            size={120}
+            value={this.state.inputValue}
+            onChange={this.handleChange} />
+          <button>Submit</button>
+        </form>
+      </div>
+    )
+  }
 }
 
 export default SearchBar;
