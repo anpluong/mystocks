@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import StockDateList from './StockDateList';
 import Table from './Table';
-import Graph from './Graph';
+import GraphController from './GraphController';
 const apiKey = '6H8OCBWU5LYNFJOH';
 
 class StockDetail extends Component {
@@ -102,7 +102,8 @@ class StockDetail extends Component {
           volume={this.state.volume}
           onAddStock={this.props.onAddStock}
           onDeleteStock={this.props.onDeleteStock} />
-        <Graph selectedStock={this.props.selectedStock} />
+
+        <GraphController selectedStock={this.props.selectedStock} />
       </div>
     )
   }

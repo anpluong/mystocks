@@ -3,7 +3,11 @@ import axios from 'axios';
 import Dygraph from 'dygraphs';
 const apiKey = '6H8OCBWU5LYNFJOH';
 
-class Graph extends Component {
+
+
+
+// Contains routing logic
+class GraphController extends Component {
 
   constructor(props) {
     super(props);
@@ -11,27 +15,35 @@ class Graph extends Component {
     console.log(props);
   }
 
-  fetchGraphData() {
+
+  fetchAndGraphIntraday() {
     let url = `https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=${this.props.selectedStock}&interval=1min&apikey=${apiKey}&datatype=csv`;
     return axios.get(url)
       .then((response) => {
         const timeSeries = "Time Series (1min)";
         let data = response.data[timeSeries];
-        new Dygraph(this.props.selectedStock, response.data).resize(1000, 400);
+        new Dygraph(
+          this.props.selectedStock,
+          response.data,
+          {
+            height: 350,
+            width: 900
+          }
+        );
       });
   }
 
-  // No need for componentDidMount for I guess...
+  // No need for componentDidMount I guess...
   componentDidUpdate(prevProps, prevState, snapshot) {
-    this.fetchGraphData();
+    this.fetchAndGraphIntraday();
   }
 
   render() {
     return (
-      <div id={this.props.selectedStock}> </div>
+      <div style={{textAlign: 'center'}} id={this.props.selectedStock}></div>
     )
   }
 }
 
 
-export default Graph;
+export default GraphController;

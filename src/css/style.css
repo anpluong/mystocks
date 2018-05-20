@@ -63,13 +63,15 @@ body {
   .form-submit:hover{
      opacity: 0.6;
   }
-  
+
   .Add {
     float: right
   }
-  
+
   .Delete {
       float: right
   }
 
-
+  .dygraph-legend {
+    text-align: center;
+  }
