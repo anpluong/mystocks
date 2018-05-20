@@ -1,4 +1,4 @@
-# Fullstack practice
+# My Stocks
 
 Users can view daily stock data and save a list of favorites to refer back to later.
 
